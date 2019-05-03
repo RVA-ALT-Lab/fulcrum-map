@@ -10,6 +10,7 @@ Based on how we need to load resources, here are a few things I could do:
 1. Combine all JS and data files into one file per vignette
 2. The script and html could reference a global version of leaflet instead of loading their own
 3. Place all of the JS for a vignette in a `<script>` tag inside the corresponding HTML file instead of referencing external scripts using `src` attribute
+4. The `package.json` file is not necessary for anything other than making my install of leaflet easier. It could be safely removed.
 
 The result should look something like this:
 ![base-interactive example](./base-interactivity.png "Base Map")
