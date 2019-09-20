@@ -14,9 +14,29 @@ var MapUtilityClass = function ($) {
   }
 
   this.createCountyBoundries = function (map) {
-      L.geoJSON(countiesJSON)
-      .bindPopup(function(layer) {
-        return layer.feature.properties.description.NAME
+      L.geoJSON(countiesJSON, {
+        style: function(feature) {
+          const styleObject = {
+            weight: 1,
+            opacity: .9,
+            color: '#6A6A6A',
+            fillColor: '#DCDCDC',
+            fillOpacity: 1
+          }
+
+          if (feature.properties.data.SUPPORT_REP_1885) {
+            styleObject.fillColor = '#6A6A6A'
+            styleObject.color = '#F6F6F6'
+          }
+
+          if (feature.properties.data.VBSC_1885_CH) {
+            styleObject.color = '#FFFFFF'
+            styleObject.weight = 3
+          }
+
+          return styleObject
+
+        }
       })
       .addTo(map)
   }
