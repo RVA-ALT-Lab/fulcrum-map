@@ -44,8 +44,8 @@ var MapUtilityClass = function ($) {
       let legendContents = '<h4>1877 Gubernatorial Election Results</h4>'
       legendContents += '<h5>Percentage of Votes for Republicans</h5>'
       legendContents += '<i style="background:#DCDCDC;"></i>0% - 50%<br>'
-      legendContents += '<i style="background:#6A6A6A;"></i>51% - 100%<br>'
-      legendContents += 'White Outline: VBSC_1879<br>'
+      legendContents += '<i style="background:#6A6A6A;"></i>51% - 100%<br><br>'
+      legendContents += 'White Outline: Virginia Baptist State Convention 1879<br>'
       div.innerHTML = legendContents
       return div
     }
