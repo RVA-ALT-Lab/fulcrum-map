@@ -45,6 +45,21 @@ var MapUtilityClass = function ($) {
     .addTo(map)
   }
 
+  this.createNewLegend = (map) => {
+    const legend = L.control({position: 'bottomleft'})
+    this.legendControl = legend
+    legend.onAdd = (map) => {
+      var div = L.DomUtil.create('div', 'info legend')
+      div.in = 'legend'
+      let legendContents = '<h4>Comparison of Conventions and Mahone Canvass c. 1883</h4>'
+      legendContents += '<i style="box-sizing: border-box;border: 3px solid #6A6A6A;"></i>Mahone 1883 Canvass<br>'
+      legendContents += '<i style="background: repeating-linear-gradient(-45deg,#A9A9A9,#A9A9A9 5px,#DCDCDC 5px,#DCDCDC 10px)"></i>Baptist Associations, 1881-1883<br>'
+      div.innerHTML = legendContents
+      return div
+    }
+    legend.addTo(map)
+  }
+
 
 }
 
@@ -53,3 +68,4 @@ var MapTool = new MapUtilityClass();
 const map = MapTool.initMap();
 
 MapTool.createCountyBoundries(map);
+MapTool.createNewLegend(map);

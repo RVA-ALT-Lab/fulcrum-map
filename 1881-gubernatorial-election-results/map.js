@@ -34,6 +34,22 @@ var MapUtilityClass = function ($) {
       })
       .addTo(map)
   }
+  this.createNewLegend = (map) => {
+    const legend = L.control({position: 'bottomleft'})
+    this.legendControl = legend
+    legend.onAdd = (map) => {
+      var div = L.DomUtil.create('div', 'info legend')
+      div.in = 'legend'
+      let legendContents = '<h4>1881 Gubernatorial Election Results</h4>'
+      legendContents += '<h5>Percentage of Votes for Republicans</h5>'
+      legendContents += '<i style="background:#DCDCDC;"></i>22% - 50%<br>'
+      legendContents += '<i style="background:#6A6A6A;"></i>51% - 93%<br>'
+      legendContents += 'White Outline: VBSC_1881<br>'
+      div.innerHTML = legendContents
+      return div
+    }
+    legend.addTo(map)
+  }
 
 
 }
@@ -43,3 +59,4 @@ var MapTool = new MapUtilityClass();
 const map = MapTool.initMap();
 
 MapTool.createCountyBoundries(map);
+MapTool.createNewLegend(map);
