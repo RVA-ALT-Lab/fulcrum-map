@@ -8,17 +8,21 @@ var MapUtilityClass = function ($) {
   }
 
   this.processStyles = function(feature) {
+    const democraticSupportChecked = document.querySelector('.interactive.democraticSupport').checked
     const vbscChecked = document.querySelector('.interactive.vbsc').checked
     const styleObject = {
       weight: 1,
       opacity: .9,
       color: '#6A6A6A',
-      fillColor: '#DCDCDC',
+      fillColor: '#F6F6F6',
       fillOpacity: 1
     }
 
-    if (feature.properties.data.SUPPORT_REP_1877) {
-      styleObject.fillColor = '#6A6A6A'
+    console.log(feature.properties.data.SUPPORT_REP_1877)
+    if ((
+      feature.properties.data.SUPPORT_REP_1877 === '' ||
+      feature.properties.data.SUPPORT_REP_1877 === undefined ) && democraticSupportChecked === true ) {
+      styleObject.fillColor = '#DCDCDC'
       styleObject.color = '#F6F6F6'
     }
 
@@ -51,7 +55,7 @@ var MapUtilityClass = function ($) {
         div.in = 'legend'
         let legendContents = '<h4>1877 Gubernatorial Election Results</h4>'
         legendContents += '<h5>Percentage of Votes for Republicans</h5>'
-        legendContents += '<i style="background:#DCDCDC;"></i>0% - 50%<br>'
+        legendContents += '<input type="checkbox" class="interactive democraticSupport" value="democraticSupport" checked>&nbsp;<i style="background:#DCDCDC;"></i>0% - 50%<br>'
         legendContents += '<i style="background:#6A6A6A;"></i>51% - 100%<br><br>'
         legendContents += '<input type="checkbox" class="interactive vbsc" value="vbsc" checked>&nbsp;White Outline: Virginia Baptist State Convention 1879<br>'
         div.innerHTML = legendContents
@@ -72,5 +76,7 @@ const map = MapTool.initMap();
 MapTool.createNewLegend(map).then(() => {
   MapTool.createCountyBoundries(map).then(() => {
     document.querySelector('.interactive.vbsc').addEventListener('change', (e) => MapTool.geoJson.setStyle(MapTool.processStyles))
+    document.querySelector('.interactive.democraticSupport').addEventListener('change', (e) => MapTool.geoJson.setStyle(MapTool.processStyles))
+
   });
 });
