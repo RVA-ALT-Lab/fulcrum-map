@@ -20,13 +20,21 @@ var MapUtilityClass = function ($) {
 
   this.processStyles = function(feature) {
     const republicanSupportChecked = document.querySelector('.interactive.republicanSupport').checked
+    const democraticSupportChecked = document.querySelector('.interactive.democraticSupport').checked
     const vbscChecked = document.querySelector('.interactive.vbsc').checked
     const styleObject = {
       weight: 1,
       opacity: .9,
       color: '#6A6A6A',
-      fillColor: '#DCDCDC',
+      fillColor: '#F6F6F6',
       fillOpacity: 1
+    }
+
+    if ((
+      feature.properties.data.SUPPORT_REP_1877 === '' ||
+      feature.properties.data.SUPPORT_REP_1877 === undefined ) && democraticSupportChecked === true ) {
+      styleObject.fillColor = '#DCDCDC'
+      styleObject.color = '#F6F6F6'
     }
 
     if (feature.properties.data.SUPPORT_REP_1885 && republicanSupportChecked === true) {
@@ -42,34 +50,6 @@ var MapUtilityClass = function ($) {
 
   }
 
-  // this.createCountyBoundries = function (map) {
-  //     L.geoJSON(countiesJSON, {
-  //       style: function(feature) {
-  //         const styleObject = {
-  //           weight: 1,
-  //           opacity: .9,
-  //           color: '#6A6A6A',
-  //           fillColor: '#DCDCDC',
-  //           fillOpacity: 1
-  //         }
-
-  //         if (feature.properties.data.SUPPORT_REP_1885) {
-  //           styleObject.fillColor = '#6A6A6A'
-  //           styleObject.color = '#F6F6F6'
-  //         }
-
-  //         if (feature.properties.data.VBSC_1885_CH) {
-  //           styleObject.color = '#FFFFFF'
-  //           styleObject.weight = 3
-  //         }
-
-  //         return styleObject
-
-  //       }
-  //     })
-  //     .addTo(map)
-  // }
-
   this.createNewLegend = (map) => {
     return new Promise((resolve, reject)=> {
       const legend = L.control({position: 'bottomleft'})
@@ -79,7 +59,7 @@ var MapUtilityClass = function ($) {
         div.in = 'legend'
         let legendContents = '<h4>1885 Gubernatorial Election Results</h4>'
         legendContents += '<h5>Percentage of Votes for Republicans</h5>'
-        legendContents += '<i style="background:#DCDCDC;"></i>18% - 50%<br>'
+        legendContents += '<input type="checkbox" class="interactive democraticSupport" value="democraticSupport" checked>&nbsp;<i style="background:#DCDCDC;"></i>18% - 50%<br>'
         legendContents += '<input type="checkbox" class="interactive republicanSupport" value="republicanSupport" checked>&nbsp;<i style="background:#6A6A6A;"></i>51% - 100%<br><br>'
         legendContents += '<input type="checkbox" class="interactive vbsc" value="vbsc" checked>&nbsp;White Outline: Virginia Baptist State Convention 1885<br>'
         div.innerHTML = legendContents
@@ -100,6 +80,7 @@ const map = MapTool.initMap();
 MapTool.createNewLegend(map).then(() => {
   MapTool.createCountyBoundries(map).then(() => {
     document.querySelector('.interactive.republicanSupport').addEventListener('change', (e) => MapTool.geoJson.setStyle(MapTool.processStyles))
+    document.querySelector('.interactive.democraticSupport').addEventListener('change', (e) => MapTool.geoJson.setStyle(MapTool.processStyles))
     document.querySelector('.interactive.vbsc').addEventListener('change', (e) => MapTool.geoJson.setStyle(MapTool.processStyles))
   });
 });
