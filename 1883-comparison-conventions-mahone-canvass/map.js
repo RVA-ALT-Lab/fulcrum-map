@@ -16,7 +16,7 @@ var MapUtilityClass = function ($) {
       weight: 1,
       opacity: .9,
       color: '#6A6A6A',
-      fillColor: '#DCDCDC',
+      fillColor: '#F6F6F6',
       fillOpacity: 1
     }
 
