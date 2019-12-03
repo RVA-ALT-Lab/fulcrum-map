@@ -7,14 +7,26 @@ var MapUtilityClass = function ($) {
       return mymap;
   }
 
+  this.fetchRawJson = function () {
+    return new Promise((resolve, reject) => {
+      fetch('../va-counties-town-cities-extended.json')
+      .then((data) => data.json())
+      .then((json) => {
+        resolve(json)
+      })
+    })
+  }
+
   this.createCountyBoundries = function (map) {
     return new Promise((resolve, reject) => {
-      const geoJson = L.geoJSON(countiesJSON, {
-        style: this.processStyles
+      this.fetchRawJson().then(json => {
+        const geoJson = L.geoJSON(json, {
+          style: this.processStyles
+        })
+        this.geoJson = geoJson
+        geoJson.addTo(map)
+        resolve()
       })
-      this.geoJson = geoJson
-      geoJson.addTo(map)
-      resolve()
     })
   }
 

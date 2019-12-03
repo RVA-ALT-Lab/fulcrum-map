@@ -7,6 +7,16 @@ var MapUtilityClass = function ($) {
       return mymap;
   }
 
+  this.fetchRawJson = function () {
+    return new Promise((resolve, reject) => {
+      fetch('../va-counties-town-cities-extended.json')
+      .then((data) => data.json())
+      .then((json) => {
+        resolve(json)
+      })
+    })
+  }
+
   this.processStyles = function(feature) {
     const democraticSupportChecked = document.querySelector('.interactive.democraticSupport').checked
     const vbscChecked = document.querySelector('.interactive.vbsc').checked
@@ -18,7 +28,6 @@ var MapUtilityClass = function ($) {
       fillOpacity: 1
     }
 
-    console.log(feature.properties.data.SUPPORT_REP_1877)
     if ((
       feature.properties.data.SUPPORT_REP_1877 === '' ||
       feature.properties.data.SUPPORT_REP_1877 === undefined ) && democraticSupportChecked === true ) {
@@ -37,12 +46,14 @@ var MapUtilityClass = function ($) {
 
   this.createCountyBoundries = function (map) {
     return new Promise((resolve, reject) => {
-      const geoJson = L.geoJSON(countiesJSON, {
-        style: this.processStyles
+      this.fetchRawJson().then(json => {
+        const geoJson = L.geoJSON(json, {
+          style: this.processStyles
+        })
+        this.geoJson = geoJson
+        geoJson.addTo(map)
+        resolve()
       })
-      this.geoJson = geoJson
-      geoJson.addTo(map)
-      resolve()
     })
   }
 
